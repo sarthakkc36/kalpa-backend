@@ -1,46 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- Favicon and Icon Links -->
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-  <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
+<?php
+require_once 'includes/config.php';
 
-  <!-- Theme Color -->
-  <meta name="theme-color" content="#48825d">
-
-  <!-- Primary Meta Tags -->
-  <meta name="title" content="Kalpavriksha Education Foundation">
-  <meta name="description"
-    content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
-
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kalpaeducation.com">
-  <meta property="og:title" content="Kalpavriksha Education Foundation">
-  <meta property="og:description"
-    content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
-  <meta property="og:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
-
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://kalpaeducation.com">
-  <meta name="twitter:title" content="Kalpavriksha Education Foundation">
-  <meta name="twitter:description"
-    content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
-  <meta name="twitter:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Training &amp; Workshops - Kalpavriksha Education Foundation</title>
-  <link rel="stylesheet" href="styles.css?v=1.1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
+$page_title = "Training & Workshops";
+$current_page = "training";
+include 'includes/header.php';
+$additonal_styles = '  <style>
     /* Registration Modal Styles */
     .modal {
       display: none;
@@ -285,78 +252,33 @@
                 grid-template-columns: 1fr;
             }
         } 
-  </style>
-  <link rel="stylesheet" href="optimization.css">
-<link rel="stylesheet" href="scroll-to-top.css">
+  </style>';
+
+// Get upcoming training programs
+$upcoming_query = "SELECT * FROM training_programs WHERE start_date >= CURDATE() AND is_active = 1 ORDER BY start_date ASC LIMIT 3";
+$upcoming_result = mysqli_query($conn, $upcoming_query);
+$upcoming_programs = [];
+
+if ($upcoming_result) {
+    while ($row = mysqli_fetch_assoc($upcoming_result)) {
+        $upcoming_programs[] = $row;
+    }
+}
+
+// Get all training modules/categories
+$modules_query = "SELECT * FROM training_modules WHERE is_active = 1 ORDER BY display_order ASC";
+$modules_result = mysqli_query($conn, $modules_query);
+$training_modules = [];
+
+if ($modules_result) {
+    while ($row = mysqli_fetch_assoc($modules_result)) {
+        $training_modules[] = $row;
+    }
+}
+?>
 </head>
 
 <body>
-  <!-- Header -->
-  <header>
-    <a href="/index" class="logo">
-      <img src="images/logo.webp" alt="Kalpavriksha Logo" width="auto" height="auto" />
-    </a>
-
-    <!-- Desktop Navigation -->
-    <nav class="desktop-nav">
-      <ul class="nav-links">
-        <li><a href="/index">Home</a></li>
-        <li><a href="/school-consultation.html">School Consultation</a></li>
-        <li><a href="/phonics.html">Phonics Consultation</a></li>
-        <li><a href="/training" class="active">Training</a></li>
-        <li><a href="/Resources">Resources</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/about-us">About Us</a></li>
-        <li><a href="/gallery">Gallery</a></li>
-      </ul>
-    </nav>
-
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-button" aria-label="Toggle mobile menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-      <ul>
-        <li><a href="/index">Home</a></li>
-        <li><a href="/school-consultation.html">School Consultation</a></li>
-        <li><a href="/phonics.html">Phonics Consultation</a></li>
-        <li><a href="/training" class="active">Training</a></li>
-        <li><a href="/Resources">Resources</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/about-us">About Us</a></li>
-        <li><a href="/gallery">Gallery</a></li>
-      </ul>
-    </div>
-
-    <!-- Mobile Menu Overlay -->
-    <div class="menu-overlay"></div>
-  </header>
-  <div class="top-info-bar">
-    <div class="container">
-      <div class="info-slider">
-        <div class="info-slide">
-          <i class="fas fa-phone"></i>
-           <a href="tel:01-4547300">01-4547300</a>
-        </div>
-        <div class="info-slide">
-          <i class="fas fa-envelope"></i>
-          <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
-        </div>
-        <div class="info-slide">
-          <i class="far fa-clock"></i>
-          Office Hour: 9am - 6pm
-        </div>
-        <div class="info-slide">
-          <i class="fas fa-map-marker-alt"></i>
-          Maharajgunj, Kathmandu, Nepal || Ghorahi, Dang, Nepal
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- Page Header -->
   <section class="page-header">
     <div class="container">
@@ -1730,84 +1652,50 @@
     <div class="container">
         <h2 class="section-title text-center mb-8">Upcoming & Ongoing Training Programs</h2>
         <div class="status-grid">
-          <!-- New Online Montessori Training -->
-          <div class="program-card">
-              <div class="badge">New Batch Starting</div>
-              <div class="program-content">
-                  <h2 class="program-title">Online Intensive Montessori Training</h2>
-                  <div class="program-image">
-                      <img src="images/montessori-7.webp" alt="Online Montessori Training" class="img-responsive">
-                  </div>
-                  <div class="program-details">
-                      <h3>Course Highlights:</h3>
-                      <ul class="feature-list">
-                          <li>Introduction to Early Childhood Education</li>
-                          <li>Classroom Management & Behavior Guidance</li>
-                          <li>Developing Effective Facilitating Skills</li>
-                          <li>Montessori Education & Strategies</li>
-                          <li>Planning & Implementation</li>
-                      </ul>
-                      <div class="course-info">
-                          <p><i class="fas fa-calendar"></i> Starts: 23rd Magh, 2081 (Wednesday)</p>
-                          <p><i class="fas fa-clock"></i> Time: 8:00 PM - 9:30 PM</p>
-                          <p><i class="fas fa-tag"></i> Fee: Rs 6500/-</p>
-                      </div>
-                      <p class="program-note">Transform your teaching approach with our comprehensive online training</p>
-                  </div>
-                  <a href="https://bit.ly/4gLrLYo" target="_blank" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      
-          <!-- Existing Montessori Training -->
-          <div class="program-card">
-              <div class="badge">Ongoing</div>
-              <div class="program-content">
-                  <h2 class="program-title">ECD & MONTESSORI MASTERY</h2>
-                  <div class="program-image">
-                      <img src="images/Montessori.webp" alt="Montessori Training" class="img-responsive">
-                  </div>
-                  <div class="program-details">
-                      <ul class="feature-list">
-                          <li>5-Day Foundational Course</li>
-                          <li>1-Month Intensive Program</li>
-                          <li>3-Month Mastery Program</li>
-                          <li>6-Month Professional Diploma</li>
-                      </ul>
-                      <p class="program-note">For schools, centers & aspiring teachers</p>
-                  </div>
-                  <a href="" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      
-          <!-- Existing Phonics Training -->
-          <div class="program-card">
-              <div class="badge">Upcoming</div>
-              <div class="program-content">
-                  <h2 class="program-title">7-Day Virtual Program on English and Nepali Phonics</h2>
-                  <div class="program-image">
-                      <img src="images/7-days-phonics.jpg" alt="Phonics Training" class="img-responsive">
-                  </div>
-                  <div class="program-details">
-                      <h3>Program Highlights:</h3>
-                      <ul class="feature-list">
-                          <li>Phonemic Awareness</li>
-                          <li>Basic skills of Phonics</li>
-                          <li>42 sounds with fun activities</li>
-                          <li>Blending and Segmenting</li>
-                          <li>Material Development</li>
-                          <li>Games and activities</li>
-                      </ul>
-                  </div>
-                  <a href="" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      </div>   
+            <?php if (!empty($upcoming_programs)): ?>
+                <?php foreach ($upcoming_programs as $program): ?>
+                    <div class="program-card">
+                        <div class="badge"><?php echo htmlspecialchars($program['status']); ?></div>
+                        <div class="program-content">
+                            <h2 class="program-title"><?php echo htmlspecialchars($program['title']); ?></h2>
+                            <div class="program-image">
+                                <img src="<?php echo htmlspecialchars($program['image_path']); ?>" alt="<?php echo htmlspecialchars($program['title']); ?>" class="img-responsive">
+                            </div>
+                            <div class="program-details">
+                                <h3>Course Highlights:</h3>
+                                <ul class="feature-list">
+                                    <?php 
+                                    $highlights = explode("\n", $program['highlights']);
+                                    foreach ($highlights as $highlight):
+                                        if (trim($highlight)):
+                                    ?>
+                                        <li><?php echo htmlspecialchars(trim($highlight)); ?></li>
+                                    <?php 
+                                        endif;
+                                    endforeach; 
+                                    ?>
+                                </ul>
+                                
+                                <?php if (!empty($program['course_info'])): ?>
+                                <div class="course-info">
+                                    <?php echo $program['course_info']; ?>
+                                </div>
+                                <?php endif; ?>
+                                
+                                <p class="program-note"><?php echo htmlspecialchars($program['note']); ?></p>
+                            </div>
+                            <a href="<?php echo !empty($program['registration_url']) ? htmlspecialchars($program['registration_url']) : '#register'; ?>" class="register-btn" <?php echo !empty($program['registration_url']) ? 'target="_blank"' : ''; ?>>
+                                Register Now <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="no-programs">
+                    <p>No upcoming programs at the moment. Please check back later or contact us for custom training inquiries.</p>
+                </div>
+            <?php endif; ?>
+        </div>   
     </div>
 </section>
 
@@ -1815,241 +1703,137 @@
 <section class="training-modules">
     <div class="container">
         <h2 class="section-title">Our Training Modules</h2>
+        
+        <!-- Featured module (if any) -->
+        <?php 
+        $featured_module = null;
+        foreach ($training_modules as $key => $module) {
+            if ($module['is_featured']) {
+                $featured_module = $module;
+                unset($training_modules[$key]);
+                break;
+            }
+        }
+        
+        if ($featured_module): 
+        ?>
         <div class="program-cards">
-          <!-- Main Feature Card -->
-          <div class="feature-card primary">
-            <div class="card-content">
-              <div class="card-badge">Featured Program</div>
-              <h3>7-Day Virtual Program on English and Nepali Phonics</h3>
-              <p class="card-description">
-                Transform your teaching approach with our intensive phonics training program designed for educators and parents.
-              </p>
-              
-              <div class="program-highlights">
-                <div class="highlight-grid">
-                  <div class="highlight-item">
-                    <div class="highlight-icon">
-                      <i class="fas fa-clock"></i>
+            <div class="feature-card primary">
+                <div class="card-content">
+                    <div class="card-badge">Featured Program</div>
+                    <h3><?php echo htmlspecialchars($featured_module['title']); ?></h3>
+                    <p class="card-description">
+                        <?php echo htmlspecialchars($featured_module['short_description']); ?>
+                    </p>
+                    
+                    <div class="program-highlights">
+                        <div class="highlight-grid">
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="highlight-text">
+                                    <h4>Duration</h4>
+                                    <p><?php echo htmlspecialchars($featured_module['duration']); ?></p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="highlight-text">
+                                    <h4>Target Audience</h4>
+                                    <p><?php echo htmlspecialchars($featured_module['target_audience']); ?></p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div class="highlight-text">
+                                    <h4>Mode</h4>
+                                    <p><?php echo htmlspecialchars($featured_module['mode']); ?></p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="highlight-text">
+                                    <h4>Certification</h4>
+                                    <p><?php echo $featured_module['certification'] ? 'Yes' : 'No'; ?></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="highlight-text">
-                      <h4>Duration</h4>
-                      <p>7 Days</p>
-                    </div>
-                  </div>
-                  <div class="highlight-item">
-                    <div class="highlight-icon">
-                      <i class="fas fa-users"></i>
-                    </div>
-                    <div class="highlight-text">
-                      <h4>Target Audience</h4>
-                      <p>Teachers & Parents</p>
-                    </div>
-                  </div>
-                  <div class="highlight-item">
-                    <div class="highlight-icon">
-                      <i class="fas fa-video"></i>
-                    </div>
-                    <div class="highlight-text">
-                      <h4>Mode</h4>
-                      <p>Virtual Live Sessions</p>
-                    </div>
-                  </div>
-                  <div class="highlight-item">
-                    <div class="highlight-icon">
-                      <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="highlight-text">
-                      <h4>Certification</h4>
-                      <p>Upon Completion</p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            </div>
     
-            <div class="video-section">
-              <div class="video-container" id="phonics-video-container">
-                <video 
-                    id="phonics-video"
-                    src="/videos/7daysphonics.mp4"
-                    title="Phonics Program Overview"
-                    muted
-                    playsinline
-                    controls
-                    class="w-full h-full object-cover">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-              <div class="video-caption">Watch our program overview</div>
-            </div>
-          </div>
-        </div>
-        <div class="module-card">
-          <div class="module-grid">
-              <div class="module-image">
-                  <img src="images/Montessori.webp" alt="ECD & Montessori Training">
-              </div>
-              <div class="module-content">
-                  <h3>ECD & Montessori Training</h3>
-                  <h4>Comprehensive Training Programs</h4>
-                  <ul class="module-list">
-                      <li>5-Day Foundational Course</li>
-                      <li>1-Month Intensive Program</li>
-                      <li>3-Month Mastery Program</li>
-                      <li>6-Month Professional Diploma</li>
-                  </ul>
-                  <p class="program-note">For schools, centers & aspiring teachers</p>
-                  <a href="#register" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      </div>
-      
-        <!-- Curriculum Planning -->
-        <div class="module-card">
-          <div class="module-grid">
-              <div class="module-image">
-                  <img src="images/Integrated Curriculum Planning.jpg" alt="Curriculum Planning" class="img-responsive">
-              </div>
-              <div class="module-content">
-                  <h3>Integrated Curriculum Planning</h3>
-                  <h4>A framework for Pre-Primary & Primary level teachers</h4>
-                  <p>Build your own curriculum</p>
-                  <ul class="feature-list">
-                      <li>Curriculum development principles</li>
-                      <li>Learning objectives and outcomes</li>
-                      <li>Assessment strategies</li>
-                      <li>Cross-curricular integration</li>
-                      <li>Differentiated instruction planning</li>
-                  </ul>
-                  <a href="#register" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      </div>
-      <!-- STEAM Education Module -->
-      <div class="module-card">
-        <div class="module-grid">
-            <div class="module-image">
-                <img src="images/steam.jpg" alt="STEAM Education" class="img-responsive">
-            </div>
-            <div class="module-content">
-                <h3>STEAM Education</h3>
-                <h4>Innovative Teaching Approaches</h4>
-                <p>Unlock Young Minds with STEAM Power</p>
-                <ul class="feature-list">
-                    <li>Integrating Science, Technology, Engineering, Arts, and Mathematics</li>
-                    <li>Hands-on learning activities</li>
-                    <li>Project-based learning strategies</li>
-                    <li>Creative problem-solving techniques</li>
-                    <li>Experiential learning methods</li>
-                    <li>Assessment and evaluation strategies</li>
-                </ul>
-                <a href="#register" class="register-btn">
-                    Register Now <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="video-section">
+                    <?php if (!empty($featured_module['video_path'])): ?>
+                    <div class="video-container" id="phonics-video-container">
+                        <video 
+                            id="phonics-video"
+                            src="<?php echo htmlspecialchars($featured_module['video_path']); ?>"
+                            title="<?php echo htmlspecialchars($featured_module['title']); ?> Overview"
+                            muted
+                            playsinline
+                            controls
+                            class="w-full h-full object-cover">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="video-caption">Watch our program overview</div>
+                    <?php else: ?>
+                    <div class="module-image">
+                        <img src="<?php echo htmlspecialchars($featured_module['image_path']); ?>" alt="<?php echo htmlspecialchars($featured_module['title']); ?>">
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
-    </div>
-
-        <!-- Classroom Management -->
+        <?php endif; ?>
+        
+        <!-- Regular training modules -->
+        <?php foreach ($training_modules as $module): ?>
         <div class="module-card">
             <div class="module-grid">
                 <div class="module-image">
-                    <img src="images/classroom.jpeg" alt="Classroom Management" class="img-responsive">
+                    <img src="<?php echo htmlspecialchars($module['image_path']); ?>" alt="<?php echo htmlspecialchars($module['title']); ?>">
                 </div>
                 <div class="module-content">
-                    <h3>Effective Classroom Management</h3>
-                    <h4>and Life Skill Education</h4>
-                    <p>For pre-primary and primary level teachers</p>
+                    <h3><?php echo htmlspecialchars($module['title']); ?></h3>
+                    <?php if (!empty($module['subtitle'])): ?>
+                    <h4><?php echo htmlspecialchars($module['subtitle']); ?></h4>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($module['short_description'])): ?>
+                    <p><?php echo htmlspecialchars($module['short_description']); ?></p>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($module['highlights'])): ?>
                     <ul class="feature-list">
-                        <li>Creating inclusive learning environments</li>
-                        <li>Behavior management strategies</li>
-                        <li>Life skills integration</li>
-                        <li>Student engagement techniques</li>
-                        <li>Positive discipline approaches</li>
+                        <?php 
+                        $highlights = explode("\n", $module['highlights']);
+                        foreach ($highlights as $highlight):
+                            if (trim($highlight)):
+                        ?>
+                            <li><?php echo htmlspecialchars(trim($highlight)); ?></li>
+                        <?php 
+                            endif;
+                        endforeach; 
+                        ?>
                     </ul>
+                    <?php endif; ?>
+                    
                     <a href="#register" class="register-btn">
                         Register Now <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
         </div>
-        <!-- Activity Based Teaching -->
-        <div class="module-card">
-          <div class="module-grid">
-              <div class="module-image">
-                  <img src="images/ActivityBasedLearning.jpg" alt="Activity Based Teaching" class="img-responsive">
-              </div>
-              <div class="module-content">
-                  <h3>Activity Based Teaching</h3>
-                  <h4>The Steam Approach & Project Based Learning</h4>
-                  <p>For pre-primary and primary level teachers</p>
-                  <ul class="feature-list">
-                      <li>Hands-on learning experiences</li>
-                      <li>Integration of Science, Technology, Engineering, Arts, and Mathematics</li>
-                      <li>Project-based learning methodologies</li>
-                      <li>Creative thinking and problem-solving skills</li>
-                      <li>Interactive classroom activities</li>
-                  </ul>
-                  <a href="#register" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      </div>
-      <div class="module-card">
-        <div class="module-grid">
-            <div class="module-image">
-                <img src="images/life-skill.webp" alt="Life Skills Education" class="img-responsive">
-            </div>
-            <div class="module-content">
-                <h3>Life Skills Education</h3>
-                <h4>Essential Skills for the 21st Century</h4>
-                <p>Empowering students with critical life competencies</p>
-                <ul class="feature-list">
-                    <li>Critical thinking and problem solving</li>
-                    <li>Emotional intelligence and self-awareness</li>
-                    <li>Communication and interpersonal skills</li>
-                    <li>Decision making and responsibility</li>
-                    <li>Financial literacy and resource management</li>
-                    <li>Digital citizenship and online safety</li>
-                </ul>
-                <a href="#register" class="register-btn">
-                    Register Now <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-        <div class="module-card">
-          <div class="module-grid">
-              <div class="module-image">
-                  <img src="images/Autism.webp" alt="Understanding Autism" class="img-responsive">
-              </div>
-              <div class="module-content">
-                  <h3>Understanding Autism</h3>
-                  <h4>Specialized Training for Educators</h4>
-                  <p>For teachers and education professionals</p>
-                  <ul class="feature-list">
-                      <li>Understanding autism spectrum disorders</li>
-                      <li>Creating inclusive learning environments</li>
-                      <li>Behavioral management strategies</li>
-                      <li>Individualized education planning</li>
-                      <li>Communication and social skill development</li>
-                      <li>Sensory processing considerations</li>
-                  </ul>
-                  <a href="#register" class="register-btn">
-                      Register Now <i class="fas fa-arrow-right"></i>
-                  </a>
-              </div>
-          </div>
-      </div>
-
+        <?php endforeach; ?>
     </div>
 </section>
-
 <!-- Featured Training Programs -->
 <section class="featured-program">
   <style>
@@ -2201,62 +1985,9 @@
   <!-- Contact Section -->
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
-        <div class="footer-map">
-          <iframe id="footer-map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.36972741325!2d85.33915669999999!3d27.736739999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19004faf0233%3A0xdbc2d75753d59dd5!2sKalpavriksha%20Education%20Foundation!5e0!3m2!1sen!2snp!4v1731578433006!5m2!1sen!2snp"
-            width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-          <a href="https://maps.app.goo.gl/7YBEzH2ifte2T4P46" class="footer-directions-button" target="_blank">
-            <i class="fas fa-directions"></i> Get Directions
-          </a>
-        </div>
-        <div class="contact-info">
-          <p>
-            <i class="fas fa-envelope"></i>
-            <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
-          </p>
-          <p>
-            <i class="fas fa-phone"></i>
-            <span>+977 9851364262 | 9840056656</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul class="footer-links">
-          <li><a href="/index">Home</a></li>
-          <li><a href="/training">Our Trainings</a></li>
-          <li><a href="/Resources">Resources</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <div class="social-links">
-          <a href="https://www.facebook.com/kalpavrikshaeducation"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.tiktok.com/@kalpaedu"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2024 Kalpavriksha Education Foundation. All rights reserved.</p>
-    </div>
-  </footer>
+<?php include 'includes/footer.php'; ?>
 <script defer src="script.js?v=1.0"></script>
 <script defer src="optimization.js?v=1.0"></script>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <svg class="progress-ring" width="50" height="50">
-        <circle class="background" cx="25" cy="25" r="22.5"/>
-        <circle class="progress" cx="25" cy="25" r="22.5"/>
-    </svg>
-</div>
 <script>
     // Scroll reveal animation for module cards
     document.addEventListener('DOMContentLoaded', function() {

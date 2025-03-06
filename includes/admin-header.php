@@ -226,8 +226,9 @@ require_once '../includes/config.php';
                 <li><a href="testimonials.php" <?php echo basename($_SERVER['PHP_SELF']) == 'testimonials.php' ? 'class="active"' : ''; ?>><i class="fas fa-comment-dots"></i> Testimonials</a></li>
                 <li><a href="gallery.php" <?php echo basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'class="active"' : ''; ?>><i class="fas fa-images"></i> Gallery</a></li>
                 <li><a href="partners.php" <?php echo basename($_SERVER['PHP_SELF']) == 'partners.php' ? 'class="active"' : ''; ?>><i class="fas fa-handshake"></i> Partners</a></li>
-                <li><a href="services.php" <?php echo basename($_SERVER['PHP_SELF']) == 'services.php' ? 'class="active"' : ''; ?>><i class="fas fa-cogs"></i> Services</a></li>
-                <li><a href="users.php" <?php echo basename($_SERVER['PHP_SELF']) == 'users.php' ? 'class="active"' : ''; ?>><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="training-programs.php" <?php echo basename($_SERVER['PHP_SELF']) == 'training-programs.php' ? 'class="active"' : ''; ?>><i class="fas fa-chalkboard-teacher"></i> Training Programs</a></li>
+                <li><a href="training-modules.php" <?php echo basename($_SERVER['PHP_SELF']) == 'training-modules.php' ? 'class="active"' : ''; ?>><i class="fas fa-book"></i> Training Modules</a></li>
+                <li><a href="products.php" <?php echo basename($_SERVER['PHP_SELF']) == 'products.php' ? 'class="active"' : ''; ?>><i class="fas fa-shopping-cart"></i> Products</a></li>
                 <li><a href="settings.php" <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'class="active"' : ''; ?>><i class="fas fa-sliders-h"></i> Settings</a></li>
             </ul>
         </div>
