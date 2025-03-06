@@ -24,4 +24,7 @@ function clean_input($data) {
     $data = htmlspecialchars($data);
     return mysqli_real_escape_string($conn, $data);
 }
+
+// Include helper functions
+require_once __DIR__ . '/helpers.php';
 ?>

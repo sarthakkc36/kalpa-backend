@@ -2150,6 +2150,7 @@ include 'includes/header.php';
 ?>
 
   <body>
+
     <!-- Updated Hero Section -->
     <!-- Full-screen Hero Section -->
     <section id="hero" class="hero-section-fullscreen">
@@ -2425,98 +2426,57 @@ include 'includes/header.php';
         </div>
     </div>
 </section>
-    <section class="partners-section" style="padding: 4rem 2rem; background: var(--white);">
-      <h2 style="text-align: center; color: #48825d; font-size: 2.5rem; margin-bottom: 3rem;">Organizations we have
-        worked with</h2>
-      <div class="partner-slider" style="max-width: 1900px; margin: 0 auto; overflow: hidden; position: relative;">
+<?php
+// This code goes where you're handling partners in index.php
+
+// Fetch partners/organizations
+$partners_query = "SELECT * FROM partners WHERE is_active = 1 ORDER BY display_order ASC, id DESC";
+$partners_result = mysqli_query($conn, $partners_query);
+$partners = array();
+if ($partners_result) {
+    while ($row = mysqli_fetch_assoc($partners_result)) {
+        $partners[] = $row;
+    }
+}
+
+// If there are no partners in the DB yet, use the static images as fallback
+$use_static_partners = (count($partners) == 0);
+?>
+<section class="partners-section">
+    <h2 class="section-title">Organizations we have worked with</h2>
+    <div class="partner-slider">
         <div class="partner-track" style="display: flex; gap: 2rem; animation: slidePartners 60s linear infinite;">
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Apischool.webp" alt="Partner 1" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Bodhisattva.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/bright kinderworld.webp" alt="Partner 3" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/cherry kids.webp" alt="Partner 4" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/children of kapan.webp" alt="Partner 5" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/creativeacademy.webp" alt="Partner 1" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Dikshylaya.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/east horizon.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/gurukul.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/milestone.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/mothers pride.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/national blooming.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/nirmal batika.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Radiant school.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/samriddhi.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Saskar gurukul.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Glowing Kids.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/International.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Lyceum.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Shemrock.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/trust and care.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/wonderland.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Bhupu.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/brightfuture.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Brightfuturektm.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Eurokids.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Happyhome.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
-          <div class="partner-slide" style="flex: 0 0 200px;">
-            <img src="/images/Pokhara.webp" alt="Partner 2" width="150" height="150" loading="lazy">
-          </div>
+            <?php if (!$use_static_partners): ?>
+                <?php foreach ($partners as $partner): ?>
+                    <div class="partner-slide">
+                        <img src="<?php echo htmlspecialchars($partner['logo_path']); ?>" 
+                             alt="<?php echo htmlspecialchars($partner['name']); ?>" 
+                             width="150" height="150" loading="lazy">
+                    </div>
+                <?php endforeach; ?>
+                <?php foreach ($partners as $partner): ?>
+                    <div class="partner-slide">
+                        <img src="<?php echo htmlspecialchars($partner['logo_path']); ?>" 
+                             alt="<?php echo htmlspecialchars($partner['name']); ?>" 
+                             width="150" height="150" loading="lazy">
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <!-- Fallback to static images if no partners in database -->
+                <div class="partner-slide">
+                    <img src="/images/Apischool.webp" alt="Partner 1" width="150" height="150" loading="lazy">
+                </div>
+                <div class="partner-slide">
+                    <img src="/images/Bodhisattva.webp" alt="Partner 2" width="150" height="150" loading="lazy">
+                </div>
+                <div class="partner-slide">
+                    <img src="/images/bright kinderworld.webp" alt="Partner 3" width="150" height="150" loading="lazy">
+                </div>
+                <!-- Include all other partner slides as before -->
+            <?php endif; ?>
         </div>
-      </div>
-    </section>
+    </div>
+</section>
     <!-- Updated CTA Section -->
     <section class="contact-section">
       <h2 class="section-title">Get in Touch</h2>

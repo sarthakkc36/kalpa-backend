@@ -57,6 +57,11 @@ if ($result) {
             <p style="margin: 0;">Manage Gallery</p>
         </a>
         
+        <a href="partners.php" style="background: #48825d; color: white; padding: 20px; border-radius: 10px; text-align: center; text-decoration: none;">
+            <i class="fas fa-handshake" style="font-size: 24px; margin-bottom: 10px;"></i>
+            <p style="margin: 0;">Manage Partners</p>
+        </a>
+        
         <a href="services.php" style="background: #48825d; color: white; padding: 20px; border-radius: 10px; text-align: center; text-decoration: none;">
             <i class="fas fa-cogs" style="font-size: 24px; margin-bottom: 10px;"></i>
             <p style="margin: 0;">Manage Services</p>

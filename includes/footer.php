@@ -55,12 +55,6 @@
         </div>
     </footer>
 
-    <div class="back-to-top" role="button" aria-label="Back to top">
-        <svg class="progress-ring" width="50" height="50">
-            <circle class="background" cx="25" cy="25" r="22.5"/>
-            <circle class="progress" cx="25" cy="25" r="22.5"/>
-        </svg>
-    </div>
 
     <script defer src="script.js?v=1.0"></script>
     <script defer src="optimization.js?v=1.0"></script>
