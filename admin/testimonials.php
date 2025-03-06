@@ -1,6 +1,6 @@
 <?php
 $page_title = "Manage Testimonials";
-include 'includes/admin-header.php';
+include '../includes/admin-header.php';
 
 // Process form submission for deletion
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {

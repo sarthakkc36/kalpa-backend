@@ -1,6 +1,6 @@
 <?php
 $page_title = "Add New Testimonial";
-include 'includes/admin-header.php';
+include '../includes/admin-header.php';
 
 $error_message = '';
 $success_message = '';
@@ -142,4 +142,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 
-<?php include 'includes/admin-footer.php'; ?>
+<?php include '../includes/admin-footer.php'; ?>

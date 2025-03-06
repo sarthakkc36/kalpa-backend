@@ -1,772 +1,934 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- Favicon and Icon Links -->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
+<?php
+// Set page-specific variables
+$page_title = "Kalpavriksha Education Foundation - Gallery";
+$current_page = "gallery";
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#48825d">
+// Add additional CSS for the gallery page that matches the site's existing style
+$additional_css = '
+<style>
+/* Gallery Page Styles - Matching Site\'s Original Style */
+.page-header {
+  background: linear-gradient(135deg, var(--secondary) 0%, #92b3a5 100%);
+  padding: 6rem 2rem;
+  text-align: center;
+  margin-bottom: 4rem;
+}
 
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="Kalpavriksha Education Foundation">
-    <meta name="description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
+.page-header h1 {
+  color: var(--primary);
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kalpaeducation.com">
-    <meta property="og:title" content="Kalpavriksha Education Foundation">
-    <meta property="og:description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
-    <meta property="og:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
+.page-header p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text);
+}
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://kalpaeducation.com">
-    <meta name="twitter:title" content="Kalpavriksha Education Foundation">
-    <meta name="twitter:description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
-    <meta name="twitter:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery - Kalpavriksha Education Foundation</title>
-    <link rel="stylesheet" href="styles.css?v=1.1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .gallery-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .gallery-filters {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-button {
-            padding: 0.5rem 1.5rem;
-            border: 2px solid var(--primary);
-            border-radius: 25px;
-            background: none;
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-button.active,
-        .filter-button:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            aspect-ratio: 16/9;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .gallery-item img,
-        .gallery-item video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-item .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(72, 130, 93, 0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .overlay {
-            opacity: 1;
-        }
-
-        .overlay-content {
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .overlay-content h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .overlay-content p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            max-width: 90%;
-            max-height: 90vh;
-            position: relative;
-        }
-
-        .modal-content img,
-        .modal-content video {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: -2rem;
-            right: -2rem;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0.5rem;
-        }
-
-        .modal-caption {
-            color: white;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        /* Section Headers */
-        .section-header {
-            text-align: center;
-            margin: 4rem 0 2rem;
-        }
-
-        .section-header h2 {
-            color: var(--primary);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-header p {
-            color: var(--text);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1rem;
-            }
-
-            .modal {
-                padding: 1rem;
-            }
-
-            .modal-close {
-                top: -1.5rem;
-                right: -1rem;
-            }
-        }
-        .gallery-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+.gallery-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
 }
 
 .section-header {
-    text-align: center;
-    margin: 3rem 0 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .section-header h2 {
-    color: #48825d;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+  color: var(--primary);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
 }
 
-.filter-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
+.section-header h2:after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.section-header p {
+  color: var(--text);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.filter-container {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .filter-btn {
-    padding: 0.8rem 1.5rem;
-    border: 2px solid #48825d;
-    border-radius: 25px;
-    background: none;
-    color: #48825d;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background: var(--white);
+  color: var(--primary);
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.filter-btn.active,
-.filter-btn:hover {
-    background: #48825d;
-    color: white;
-    transform: translateY(-2px);
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(72, 130, 93, 0.2);
 }
 
 .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
-.video-item {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    aspect-ratio: 16/9;
-    transition: transform 0.3s ease;
+.gallery-item {
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--shadow);
+  transition: all 0.3s ease;
 }
 
-.video-item:hover {
-    transform: translateY(-5px);
+.gallery-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.video-item iframe {
-    border: none;
-    width: 100%;
-    height: 100%;
+.gallery-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
 }
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(72, 130, 93, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-align: center;
-    padding: 1rem;
-    color: white;
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.video-item:hover .overlay {
+.gallery-item:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+.gallery-content {
+  padding: 1.5rem;
+}
+
+.gallery-title {
+  color: var(--primary);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-description {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.gallery-category {
+  display: inline-block;
+  background: var(--secondary);
+  color: var(--primary);
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.video-item .gallery-image-container::before {
+  content: "\f04b";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--white);
+  background-color: rgba(72, 130, 93, 0.8);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.video-item:hover .gallery-image-container::before {
+  background-color: var(--primary);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.section-divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--secondary), transparent);
+  margin: 4rem 0;
+}
+
+/* Lightbox Styles */
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  overflow: auto;
+}
+
+.lightbox-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+}
+
+.lightbox-image {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.lightbox-video {
+  max-width: 90%;
+  max-height: 90vh;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(72, 130, 93, 0.8);
+  transform: rotate(90deg);
+}
+
+.lightbox-caption {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--white);
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-caption h3 {
+  margin-bottom: 0.5rem;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.lightbox-prev {
+  left: 1rem;
+}
+
+.lightbox-next {
+  right: 1rem;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background-color: rgba(72, 130, 93, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.no-items-found {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px var(--shadow);
+}
+
+.no-items-found i {
+  font-size: 3rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.no-items-found h3 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+/* Animation for gallery items */
+.gallery-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
     opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.overlay h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+/* Apply animation with staggered delay */
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-item:nth-child(6) { animation-delay: 0.6s; }
+.gallery-item:nth-child(7) { animation-delay: 0.7s; }
+.gallery-item:nth-child(8) { animation-delay: 0.8s; }
+.gallery-item:nth-child(9) { animation-delay: 0.9s; }
+.gallery-item:nth-child(n+10) { animation-delay: 1s; }
+
+/* Tab navigation for Photos/Videos sections */
+.tab-container {
+  margin-bottom: 3rem;
+  text-align: center;
 }
 
-.overlay p {
-    font-size: 0.9rem;
-    opacity: 0.9;
+.tab-navigation {
+  display: inline-flex;
+  background: var(--white);
+  border-radius: 50px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 15px var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  border: none;
+  border-radius: 50px;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1rem;
-    }
-
-    .filter-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .section-header h2 {
-        font-size: 2rem;
-    }
+  .page-header {
+    padding: 4rem 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .gallery-section {
+    padding: 0 1rem 3rem;
+  }
+  
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .gallery-image-container {
+    height: 200px;
+  }
+  
+  .lightbox-prev,
+  .lightbox-next {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .tab-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
-    </style>
-<link rel="stylesheet" href="optimization.css">
-    <link rel="stylesheet" href="scroll-to-top.css">
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <a href="/index" class="logo">
-            <img src="images/logo.webp" alt="Kalpavriksha Logo" width="auto" height="auto" />
-        </a>
-        
-        <!-- Desktop Navigation -->
-        <nav class="desktop-nav">
-            <ul class="nav-links">
-                <li><a href="/index">Home</a></li>
-                <li><a href="/school-consultation.html">School Consultation</a></li>
-                <li><a href="/phonics.html">Phonics Consultation</a></li>
-                <li><a href="/training">Training</a></li>
-                <li><a href="/Resources">Resources</a></li>
-                <li><a href="/contact">Contact</a></li>
-                <li><a href="/about-us">About Us</a></li>
-                <li><a href="/gallery" class="active">Gallery</a></li>
-            </ul>
-        </nav>
 
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-button" aria-label="Toggle mobile menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-          </button>
-      
-          <!-- Mobile Menu -->
-          <div class="mobile-menu">
-            <ul>
-              <li><a href="/index" class="active">Home</a></li>
-              <li><a href="/school-consultation.html">School Consultation</a></li>
-              <li><a href="/phonics.html">Phonics Consultation</a></li>
-              <li><a href="/training">Training</a></li>
-              <li><a href="/Resources">Resources</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/about-us">About Us</a></li>
-              <li><a href="/gallery" class="active">Gallery</a></li>
-            </ul>
-          </div>
-      
-          <!-- Mobile Menu Overlay -->
-          <div class="menu-overlay"></div>
-        </header>
-        <div class="top-info-bar">
-          <div class="container">
-            <div class="info-slider">
-              <div class="info-slide">
-                <i class="fas fa-phone"></i>
-                 <a href="tel:01-4547300">01-4547300</a>
-              </div>
-              <div class="info-slide">
-                <i class="fas fa-envelope"></i>
-                <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
-              </div>
-              <div class="info-slide">
-                <i class="far fa-clock"></i>
-                Office Hour: 9am - 6pm
-              </div>
-              <div class="info-slide">
-                <i class="fas fa-map-marker-alt"></i>
-                Maharajgunj, Kathmandu, Nepal || Ghorahi, Dang, Nepal
-              </div>
-            </div>
-          </div>
-        </div>
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Our Gallery</h1>
-            <p>Explore our training sessions, workshops, and educational activities</p>
-        </div>
-    </section>
-    <div class="gallery-container">
-        <div class="section-header">
-            <h2>Video Gallery</h2>
-            <p>Watch our educational activities in action</p>
-        </div>
-    
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">All Videos</button>
-            <button class="filter-btn" data-filter="consultation">School Consultation</button>
-            <button class="filter-btn" data-filter="physical">Physical Training</button>
-            <button class="filter-btn" data-filter="virtual">Virtual Training</button>
-            <button class="filter-btn" data-filter="parenting">Parenting Sessions</button>
-            <button class="filter-btn" data-filter="olympiad">Kids Olympiad</button>
-            <button class="filter-btn" data-filter="games">Fun Games</button>
-        </div>
-    
-        <div class="gallery-grid" id="videoGallery">
-            <div class="gallery-item video-item" data-category="virtual">
-                <iframe width="100%" height="100%"
-                    src="https://www.youtube.com/embed/rGYu3Ht6RsM" 
-                    title="Training Session" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Nepali Alphabets</h3>
-                    <p>Learn Nepali Alphabets</p>
-                </div>
-            </div>
-            <!-- Existing Videos -->
-            <div class="gallery-item video-item" data-category="games">
-                <iframe width="100%" height="100%" 
-                    src="https://www.youtube.com/embed/gviJ0ZMM0qA?si=MUQgezUCwLUxtD6a" 
-                    title="Domino Games" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Domino Games</h3>
-                    <p>Fun way to Learn and Play</p>
-                </div>
-            </div>
-            <div class="gallery-item video-item" data-category="games">
-                <iframe width="100%" height="100%" 
-                    src="https://www.youtube.com/embed/778MTckHVJA?si=EtZbddc5Pr1OFY9T" 
-                    title="Lotto Game Guide" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Fun & Easy Lotto Game Guide for Kids</h3>
-                    <p>Play & Learn with Joy! 🌈</p>
-                </div>
-            </div>
-    
-            <div class="gallery-item video-item" data-category="parenting">
-                <iframe width="100%" height="100%"
-                    src="https://www.youtube.com/embed/9wfxVHUQw-E" 
-                    title="Shaikshik Bahas" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Educational Debate</h3>
-                    <p>Shaikshik Bahas with experts</p>
-                </div>
-            </div>
-    
-            <div class="gallery-item video-item" data-category="olympiad">
-                <iframe width="100%" height="100%"
-                    src="https://www.youtube.com/embed/mPa6DFSO1wE" 
-                    title="Kids Olympiad" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Kids Olympiad</h3>
-                    <p>Annual educational competition</p>
-                </div>
-            </div>
-    
-            <div class="gallery-item video-item" data-category="parenting">
-                <iframe width="100%" height="100%"
-                    src="https://www.youtube.com/embed/q6vayKYc2nA" 
-                    title="Tips on Effective Parenting" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Parenting Tips</h3>
-                    <p>5 Effective Parenting Tips</p>
-                </div>
-            </div>
-    
-            <div class="gallery-item video-item" data-category="physical">
-                <iframe width="100%" height="100%"
-                    src="https://www.youtube.com/embed/Qhyz1HD86Yk" 
-                    title="Motivational Video for Teachers" 
-                    allowfullscreen>
-                </iframe>
-                <div class="overlay">
-                    <h3>Teacher Motivation</h3>
-                    <p>Inspiring educational excellence</p>
-                </div>
-            </div>
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .filter-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .tab-navigation {
+    width: 100%;
+    flex-direction: column;
+    border-radius: 15px;
+  }
+  
+  .tab-button {
+    border-radius: 0;
+    width: 100%;
+  }
+  
+  .tab-button:first-child {
+    border-radius: 15px 15px 0 0;
+  }
+  
+  .tab-button:last-child {
+    border-radius: 0 0 15px 15px;
+  }
+}
+</style>';
+
+// Include database connection
+require_once 'includes/config.php';
+
+// Get distinct categories for images
+$image_categories_query = "SELECT DISTINCT category FROM gallery_items WHERE is_active = 1 AND type = 'image' AND category IS NOT NULL AND category != '' ORDER BY category";
+$image_categories_result = mysqli_query($conn, $image_categories_query);
+$image_categories = [];
+while ($row = mysqli_fetch_assoc($image_categories_result)) {
+    $image_categories[] = $row['category'];
+}
+
+// Get distinct categories for videos
+$video_categories_query = "SELECT DISTINCT category FROM gallery_items WHERE is_active = 1 AND type = 'video' AND category IS NOT NULL AND category != '' ORDER BY category";
+$video_categories_result = mysqli_query($conn, $video_categories_query);
+$video_categories = [];
+while ($row = mysqli_fetch_assoc($video_categories_result)) {
+    $video_categories[] = $row['category'];
+}
+
+// Apply filter if set for images
+$image_where_clause = "is_active = 1 AND type = 'image'";
+if (isset($_GET['image_category']) && $_GET['image_category'] != 'all') {
+    $filter_category = mysqli_real_escape_string($conn, $_GET['image_category']);
+    $image_where_clause .= " AND category = '$filter_category'";
+}
+
+// Apply filter if set for videos
+$video_where_clause = "is_active = 1 AND type = 'video'";
+if (isset($_GET['video_category']) && $_GET['video_category'] != 'all') {
+    $filter_category = mysqli_real_escape_string($conn, $_GET['video_category']);
+    $video_where_clause .= " AND category = '$filter_category'";
+}
+
+// Fetch image items
+$image_query = "SELECT * FROM gallery_items WHERE $image_where_clause ORDER BY display_order ASC, created_at DESC";
+$image_result = mysqli_query($conn, $image_query);
+
+// Fetch video items
+$video_query = "SELECT * FROM gallery_items WHERE $video_where_clause ORDER BY display_order ASC, created_at DESC";
+$video_result = mysqli_query($conn, $video_query);
+
+// Determine active tab
+$active_tab = isset($_GET['tab']) && $_GET['tab'] == 'videos' ? 'videos' : 'photos';
+
+// Include header
+include 'includes/header.php';
+?>
+
+<!-- Page Header -->
+<div class="page-header">
+    <h1>Our Gallery</h1>
+    <p>Explore our collection of memories, events, and activities at Kalpavriksha Education Foundation.</p>
+</div>
+
+<!-- Gallery Section -->
+<section class="gallery-section">
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+        <div class="tab-navigation">
+            <button class="tab-button <?php echo ($active_tab == 'photos') ? 'active' : ''; ?>" data-tab="photos">
+                <i class="fas fa-images"></i> Photos
+            </button>
+            <button class="tab-button <?php echo ($active_tab == 'videos') ? 'active' : ''; ?>" data-tab="videos">
+                <i class="fas fa-video"></i> Videos
+            </button>
         </div>
     </div>
-    <div class="gallery-container">
+
+    <!-- Photos Tab Content -->
+    <div id="photos-content" class="tab-content <?php echo ($active_tab == 'photos') ? 'active' : ''; ?>">
         <div class="section-header">
             <h2>Photo Gallery</h2>
-            <p>Capturing moments of learning and growth</p>
-        </div>
-    
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">All Photos</button>
-            <button class="filter-btn" data-filter="consultation">School Consultation</button>
-            <button class="filter-btn" data-filter="physical">Physical Training</button>
-            <button class="filter-btn" data-filter="virtual">Virtual Training</button>
-            <button class="filter-btn" data-filter="parenting">Parenting Sessions</button>
-            <button class="filter-btn" data-filter="olympiad">Kids Olympiad</button>
-            <button class="filter-btn" data-filter="exhibition">Exhibition</button>
-        </div>
-    
-        <div class="gallery-grid" id="photoGallery">
-            <!-- School Consultation -->
-            <div class="gallery-item" data-category="consultation">
-                <img src="images/7-days-phonics.jpg" alt="School Consultation Session" loading="lazy">
-                <div class="overlay">
-                    <h3>School Visit Program</h3>
-                    <p>Expert consultation with school management</p>
-                </div>
-            </div>
-    
-            <!-- Physical Training -->
-            <div class="gallery-item" data-category="physical">
-                <img src="images/training.webp" alt="Physical Training Workshop" loading="lazy">
-                <div class="overlay">
-                    <h3>Teacher Training Workshop</h3>
-                    <p>Interactive learning session</p>
-                </div>
-            </div>
-    
-            <!-- Virtual Training -->
-            <div class="gallery-item" data-category="virtual">
-                <img src="images/virtual-session.jpg" alt="Virtual Training Program" loading="lazy">
-                <div class="overlay">
-                    <h3>Online Workshop</h3>
-                    <p>Remote learning excellence</p>
-                </div>
-            </div>
-    
-            <!-- Kids Olympiad -->
-            <div class="gallery-item" data-category="olympiad">
-                <img src="images/Kids-Olympiad.jpg" alt="Kids Olympiad Event" loading="lazy">
-                <div class="overlay">
-                    <h3>Kids Olympiad 2023</h3>
-                    <p>Annual educational competition</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal for Image Preview -->
-    <div class="modal">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modalImg">
-        <div class="modal-caption"></div>
-    </div>
-    
-    <!-- Modal -->
-    <div class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body"></div>
-            <div class="modal-caption"></div>
-        </div>
-    </div>
-
-    <!-- Modal for Media Display -->
-    <div class="modal" id="mediaModal">
-        <button class="modal-close">&times;</button>
-        <div class="modal-content">
-            <!-- Content will be dynamically inserted here -->
-        </div>
-        <div class="modal-caption"></div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <div class="footer-map">
-                    <iframe 
-                        id="footer-map"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.36972741325!2d85.33915669999999!3d27.736739999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19004faf0233%3A0xdbc2d75753d59dd5!2sKalpavriksha%20Education%20Foundation!5e0!3m2!1sen!2snp!4v1731578433006!5m2!1sen!2snp"
-                        width="100%" 
-                        height="200" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                    <a href="https://maps.app.goo.gl/7YBEzH2ifte2T4P46" 
-                    class="footer-directions-button" 
-                    target="_blank">
-                        <i class="fas fa-directions"></i> Get Directions
-                    </a>
-                </div>
-                <div class="contact-info">
-                    <p>
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
-                    </p>
-                    <p>
-                        <i class="fas fa-phone"></i>
-                        <span>+977 9851364262 | 9840056656</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="/index">Home</a></li>
-                    <li><a href="/training">Our Trainings</a></li>
-                    <li><a href="/Resources">Resources</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/kalpavrikshaeducation"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.tiktok.com/@kalpaedu"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
+            <p>Capturing moments and memories from our educational journey</p>
         </div>
         
-        <div class="footer-bottom">
-            <p>&copy; 2024 Kalpavriksha Education Foundation. All rights reserved.</p>
+        <!-- Filter buttons for photos -->
+        <div class="filter-container photo-filters">
+            <button class="filter-btn <?php echo (!isset($_GET['image_category']) || $_GET['image_category'] == 'all') ? 'active' : ''; ?>" data-filter="all" data-type="photos">All Photos</button>
+            <?php foreach ($image_categories as $category): ?>
+                <button class="filter-btn <?php echo (isset($_GET['image_category']) && $_GET['image_category'] == $category) ? 'active' : ''; ?>" data-filter="<?php echo htmlspecialchars($category); ?>" data-type="photos">
+                    <?php echo htmlspecialchars(ucfirst($category)); ?>
+                </button>
+            <?php endforeach; ?>
         </div>
-    </footer>
 
-    <script defer src="script.js?v=1.0"></script>
-    <script defer src="optimization.js?v=1.0"></script>
-<!-- Back to Top Button -->
-<div class="back-to-top" role="button" aria-label="Back to top">
-    <svg class="progress-ring" width="50" height="50">
-        <circle class="background" cx="25" cy="25" r="22.5"/>
-        <circle class="progress" cx="25" cy="25" r="22.5"/>
-    </svg>
-</div>
-<script>document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('mediaModal');
-    const modalContent = modal.querySelector('.modal-content');
-    const modalCaption = modal.querySelector('.modal-caption');
-    const closeButton = modal.querySelector('.modal-close');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    // Function to extract YouTube video ID from URL
-    function getYouTubeVideoId(url) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
+        <!-- Photos Gallery Grid -->
+        <div class="gallery-grid photos-grid">
+            <?php if (mysqli_num_rows($image_result) > 0): ?>
+                <?php while ($item = mysqli_fetch_assoc($image_result)): ?>
+                    <div class="gallery-item" data-category="<?php echo htmlspecialchars($item['category']); ?>" data-type="image" data-src="<?php echo htmlspecialchars($item['file_path']); ?>" data-title="<?php echo htmlspecialchars($item['title']); ?>" data-description="<?php echo htmlspecialchars($item['description']); ?>">
+                        <div class="gallery-image-container">
+                            <img src="<?php echo htmlspecialchars($item['file_path']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="gallery-image" loading="lazy">
+                        </div>
+                        <div class="gallery-content">
+                            <h3 class="gallery-title"><?php echo htmlspecialchars($item['title']); ?></h3>
+                            <p class="gallery-description"><?php echo htmlspecialchars(substr($item['description'], 0, 100)); ?><?php echo (strlen($item['description']) > 100) ? '...' : ''; ?></p>
+                            <span class="gallery-category"><?php echo htmlspecialchars(ucfirst($item['category'])); ?></span>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="no-items-found">
+                    <i class="fas fa-images"></i>
+                    <h3>No photos found</h3>
+                    <p>No photos available in this category. Please try another filter or check back later.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
-    // Function to open modal
-    function openModal(content, caption) {
-        modalContent.innerHTML = content;
-        modalCaption.textContent = caption;
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-    }
-
-    // Function to close modal
-    function closeModal() {
-        modal.classList.remove('active');
-        modalContent.innerHTML = ''; // Clear content
-        document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    // Add click event listeners to gallery items
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const overlay = item.querySelector('.overlay-content');
-            const caption = overlay ? overlay.querySelector('h3').textContent : '';
-            
-            if (item.querySelector('iframe')) {
-                // Handle YouTube videos
-                const iframe = item.querySelector('iframe');
-                const videoSrc = iframe.src;
-                const videoId = getYouTubeVideoId(videoSrc);
-                
-                // Create a new iframe with increased size for modal
-                const modalIframe = `
-                    <iframe
-                        width="auto"
-                        height="auto"
-                        src="https://www.youtube.com/embed/${videoId}?autoplay=1"
-                        title="${caption}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>`;
-                
-                openModal(modalIframe, caption);
-            } else {
-                // Handle images
-                const img = item.querySelector('img');
-                if (img) {
-                    const modalImg = `<img src="${img.src}" alt="${img.alt}" />`;
-                    openModal(modalImg, caption);
-                }
-            }
-        });
-    });
-
-    // Close modal when clicking the close button
-    closeButton.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside the content
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Close modal with escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-});</script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            const modal = document.querySelector('.modal');
-            const modalImg = document.getElementById('modalImg');
-            const modalCaption = document.querySelector('.modal-caption');
-            const closeModal = document.querySelector('.close-modal');
+    <!-- Videos Tab Content -->
+    <div id="videos-content" class="tab-content <?php echo ($active_tab == 'videos') ? 'active' : ''; ?>">
+        <div class="section-header">
+            <h2>Video Gallery</h2>
+            <p>Educational videos and highlights from our programs and events</p>
+        </div>
         
-            // Filter functionality
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const filter = button.getAttribute('data-filter');
+        <!-- Filter buttons for videos -->
+        <div class="filter-container video-filters">
+            <button class="filter-btn <?php echo (!isset($_GET['video_category']) || $_GET['video_category'] == 'all') ? 'active' : ''; ?>" data-filter="all" data-type="videos">All Videos</button>
+            <?php foreach ($video_categories as $category): ?>
+                <button class="filter-btn <?php echo (isset($_GET['video_category']) && $_GET['video_category'] == $category) ? 'active' : ''; ?>" data-filter="<?php echo htmlspecialchars($category); ?>" data-type="videos">
+                    <?php echo htmlspecialchars(ucfirst($category)); ?>
+                </button>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Videos Gallery Grid -->
+        <div class="gallery-grid videos-grid">
+            <?php if (mysqli_num_rows($video_result) > 0): ?>
+                <?php while ($item = mysqli_fetch_assoc($video_result)): ?>
+                    <?php 
+                    // Extract YouTube video ID from URL
+                    $video_id = '';
+                    $url = $item['video_url'];
                     
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-        
-                    galleryItems.forEach(item => {
-                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                            item.style.display = 'block';
-                            setTimeout(() => item.style.opacity = '1', 0);
-                        } else {
-                            item.style.opacity = '0';
-                            setTimeout(() => item.style.display = 'none', 300);
-                        }
-                    });
-                });
-            });
+                    if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+                        $video_id = $match[1];
+                    }
+                    
+                    $thumbnail = !empty($video_id) ? "https://img.youtube.com/vi/$video_id/maxresdefault.jpg" : "";
+                    ?>
+                    <div class="gallery-item video-item" data-category="<?php echo htmlspecialchars($item['category']); ?>" data-type="video" data-video-id="<?php echo $video_id; ?>" data-title="<?php echo htmlspecialchars($item['title']); ?>" data-description="<?php echo htmlspecialchars($item['description']); ?>">
+                        <div class="gallery-image-container">
+                            <img src="<?php echo $thumbnail; ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="gallery-image" loading="lazy">
+                        </div>
+                        <div class="gallery-content">
+                            <h3 class="gallery-title"><?php echo htmlspecialchars($item['title']); ?></h3>
+                            <p class="gallery-description"><?php echo htmlspecialchars(substr($item['description'], 0, 100)); ?><?php echo (strlen($item['description']) > 100) ? '...' : ''; ?></p>
+                            <span class="gallery-category"><?php echo htmlspecialchars(ucfirst($item['category'])); ?></span>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="no-items-found">
+                    <i class="fas fa-video"></i>
+                    <h3>No videos found</h3>
+                    <p>No videos available in this category. Please try another filter or check back later.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="lightbox-modal">
+    <div class="lightbox-close"><i class="fas fa-times"></i></div>
+    <div class="lightbox-prev"><i class="fas fa-chevron-left"></i></div>
+    <div class="lightbox-next"><i class="fas fa-chevron-right"></i></div>
+    <div class="lightbox-content"></div>
+    <div class="lightbox-caption"></div>
+</div>
+
+<!-- Additional JavaScript for gallery functionality -->
+<?php
+$additional_js = '
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Tab functionality
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabContents = document.querySelectorAll(".tab-content");
     
+    tabButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const tabName = this.getAttribute("data-tab");
+            
+            // Update URL with the tab parameter
+            const url = new URL(window.location);
+            url.searchParams.set("tab", tabName);
+            window.history.pushState({}, "", url);
+            
+            // Update active tab button
+            tabButtons.forEach(btn => btn.classList.remove("active"));
+            this.classList.add("active");
+            
+            // Show relevant tab content
+            tabContents.forEach(content => {
+                content.classList.remove("active");
+                if (content.id === tabName + "-content") {
+                    content.classList.add("active");
+                }
+            });
         });
-        </script>
-</body>
-</html>
+    });
+    
+    // Filter functionality for photos
+    const photoFilterBtns = document.querySelectorAll(".photo-filters .filter-btn");
+    const photoItems = document.querySelectorAll(".photos-grid .gallery-item");
+
+    photoFilterBtns.forEach(btn => {
+        btn.addEventListener("click", function() {
+            const filter = this.getAttribute("data-filter");
+            
+            // Update URL with the filter parameter
+            const url = new URL(window.location);
+            if (filter === "all") {
+                url.searchParams.delete("image_category");
+            } else {
+                url.searchParams.set("image_category", filter);
+            }
+            window.history.pushState({}, "", url);
+            
+            // Update active class
+            photoFilterBtns.forEach(btn => btn.classList.remove("active"));
+            this.classList.add("active");
+            
+            // Filter items
+            photoItems.forEach(item => {
+                if (filter === "all" || item.getAttribute("data-category") === filter) {
+                    item.style.display = "block";
+                    // Reset animation
+                    item.style.animation = "none";
+                    void item.offsetWidth; // Trigger reflow
+                    item.style.animation = "fadeInUp 0.6s forwards";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+    
+    // Filter functionality for videos
+    const videoFilterBtns = document.querySelectorAll(".video-filters .filter-btn");
+    const videoItems = document.querySelectorAll(".videos-grid .gallery-item");
+
+    videoFilterBtns.forEach(btn => {
+        btn.addEventListener("click", function() {
+            const filter = this.getAttribute("data-filter");
+            
+            // Update URL with the filter parameter
+            const url = new URL(window.location);
+            if (filter === "all") {
+                url.searchParams.delete("video_category");
+            } else {
+                url.searchParams.set("video_category", filter);
+            }
+            window.history.pushState({}, "", url);
+            
+            // Update active class
+            videoFilterBtns.forEach(btn => btn.classList.remove("active"));
+            this.classList.add("active");
+            
+            // Filter items
+            videoItems.forEach(item => {
+                if (filter === "all" || item.getAttribute("data-category") === filter) {
+                    item.style.display = "block";
+                    // Reset animation
+                    item.style.animation = "none";
+                    void item.offsetWidth; // Trigger reflow
+                    item.style.animation = "fadeInUp 0.6s forwards";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+
+    // Lightbox functionality
+    const lightbox = document.querySelector(".lightbox-modal");
+    const lightboxContent = document.querySelector(".lightbox-content");
+    const lightboxCaption = document.querySelector(".lightbox-caption");
+    const lightboxClose = document.querySelector(".lightbox-close");
+    const lightboxPrev = document.querySelector(".lightbox-prev");
+    const lightboxNext = document.querySelector(".lightbox-next");
+    let currentIndex = 0;
+    let galleryArray = [];
+
+    // Function to open lightbox
+    function openLightbox(index) {
+        currentIndex = index;
+        const item = galleryArray[currentIndex];
+        
+        lightboxContent.innerHTML = "";
+        
+        if (item.dataset.type === "image") {
+            const img = document.createElement("img");
+            img.src = item.dataset.src;
+            img.alt = item.dataset.title;
+            img.className = "lightbox-image";
+            lightboxContent.appendChild(img);
+        } else if (item.dataset.type === "video") {
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube.com/embed/${item.dataset.videoId}?autoplay=1`;
+            iframe.width = "960";
+            iframe.height = "540";
+            iframe.className = "lightbox-video";
+            iframe.allowFullscreen = true;
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            lightboxContent.appendChild(iframe);
+        }
+        
+        lightboxCaption.innerHTML = `<h3>${item.dataset.title}</h3><p>${item.dataset.description || ""}</p>`;
+        lightbox.style.display = "block";
+        document.body.style.overflow = "hidden";
+        
+        // Show/hide navigation buttons based on gallery length
+        if (galleryArray.length <= 1) {
+            lightboxPrev.style.display = "none";
+            lightboxNext.style.display = "none";
+        } else {
+            lightboxPrev.style.display = "flex";
+            lightboxNext.style.display = "flex";
+        }
+    }
+
+    // Function to close lightbox
+    function closeLightbox() {
+        lightbox.style.display = "none";
+        lightboxContent.innerHTML = "";
+        document.body.style.overflow = "auto";
+    }
+
+    // Function to navigate to previous item
+    function prevItem() {
+        currentIndex = (currentIndex - 1 + galleryArray.length) % galleryArray.length;
+        openLightbox(currentIndex);
+    }
+
+    // Function to navigate to next item
+    function nextItem() {
+        currentIndex = (currentIndex + 1) % galleryArray.length;
+        openLightbox(currentIndex);
+    }
+
+    // Initialize gallery array with visible items of current tab
+    function updateGalleryArray() {
+        const activeTab = document.querySelector(".tab-content.active");
+        galleryArray = Array.from(activeTab.querySelectorAll(".gallery-item")).filter(item => item.style.display !== "none");
+    }
+
+    // Gallery item click event
+    document.querySelectorAll(".gallery-item").forEach((item, index) => {
+        item.addEventListener("click", function() {
+            updateGalleryArray();
+            const visibleIndex = galleryArray.indexOf(this);
+            openLightbox(visibleIndex);
+        });
+    });
+
+    // Lightbox navigation events
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightboxPrev.addEventListener("click", prevItem);
+    lightboxNext.addEventListener("click", nextItem);
+    
+    // Close lightbox on overlay click
+    lightbox.addEventListener("click", function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener("keydown", function(e) {
+        if (lightbox.style.display === "block") {
+            if (e.key === "Escape") {
+                closeLightbox();
+            } else if (e.key === "ArrowLeft") {
+                prevItem();
+            } else if (e.key === "ArrowRight") {
+                nextItem();
+            }
+        }
+    });
+    
+    // Initialize gallery array on page load
+    updateGalleryArray();
+});
+</script>';
+
+// Make sure back-to-top button works properly
+$additional_js .= '
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Explicitly include the scroll-to-top functionality
+    const button = document.querySelector(".back-to-top");
+    const progressRing = button.querySelector(".progress");
+    const circumference = 2 * Math.PI * 22.5; // r = 22.5
+    
+    // Set initial dash array
+    progressRing.style.strokeDasharray = circumference;
+
+    // Smooth scroll function
+    function smoothScrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    // Update progress ring and button visibility
+    function updateScroll() {
+        const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollProgress = window.scrollY;
+        const scrollPercentage = scrollProgress / scrollTotal;
+        
+        // Update progress ring
+        const offset = circumference - (scrollPercentage * circumference);
+        progressRing.style.strokeDashoffset = offset;
+
+        // Update button visibility
+        if (scrollProgress > 300) {
+            button.classList.add("visible");
+        } else {
+            button.classList.remove("visible");
+        }
+    }
+
+    // Click event
+    button.addEventListener("click", smoothScrollToTop);
+
+    // Scroll event with throttle
+    let isScrolling = false;
+    window.addEventListener("scroll", () => {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                updateScroll();
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+
+    // Touch events for mobile
+    let touchStartY;
+    button.addEventListener("touchstart", (e) => {
+        touchStartY = e.touches[0].clientY;
+        button.classList.add("active");
+    });
+
+    button.addEventListener("touchend", (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        if (touchStartY > touchEndY) {
+            smoothScrollToTop();
+        }
+        button.classList.remove("active");
+    });
+
+    // Initial update
+    updateScroll();
+});
+</script>';
+
+// Include footer
+include 'includes/footer.php';
+?>

@@ -5589,3 +5589,29 @@ body.menu-open {
     ::-webkit-scrollbar-thumb:hover {
       background: var(--primary-dark);
     }
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #48825d, #3a6b4a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow:
+    0 4px 12px rgba(72, 130, 93, 0.3),
+    0 8px 24px rgba(72, 130, 93, 0.2);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

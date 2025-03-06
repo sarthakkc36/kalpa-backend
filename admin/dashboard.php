@@ -1,6 +1,6 @@
 <?php
 $page_title = "Dashboard";
-include 'includes/admin-header.php';
+include '../includes/admin-header.php';
 
 // Get some basic stats for the dashboard
 $testimonials_count = 0;
@@ -64,4 +64,4 @@ if ($result) {
     </div>
 </div>
 
-<?php include 'includes/admin-footer.php'; ?>
+<?php include '../includes/admin-footer.php'; ?>
