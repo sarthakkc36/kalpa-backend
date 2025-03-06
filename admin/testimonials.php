@@ -106,4 +106,4 @@ $result = mysqli_query($conn, $sql);
     </table>
 </div>
 
-<?php include 'includes/admin-footer.php'; ?>
+<?php include '../includes/admin-footer.php'; ?>
