@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '../config.php';
+require_once __DIR__ . '../settings-helper.php';
 // Start the session if you need to track user login status later
 session_start();
 ?>
