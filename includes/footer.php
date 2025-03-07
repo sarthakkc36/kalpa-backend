@@ -1,5 +1,5 @@
 <!-- Footer -->
- <?php 
+<?php 
  $additional_styles='/* Back to Top Button */
 .back-to-top {
   position: fixed;
@@ -151,7 +151,7 @@
                 <div class="contact-info">
                     <p>
                         <i class="fas fa-envelope"></i>
-                        <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
+                        <a href="mailto:<?php the_setting('contact_email', 'kalpavriksha.efn@gmail.com'); ?>"><?php the_setting('contact_email', 'kalpavriksha.efn@gmail.com'); ?></a>
                     </p>
                     <p>
                         <i class="fas fa-phone"></i>
@@ -172,14 +172,31 @@
             <div class="footer-section">
                 <h3>Follow Us</h3>
                 <div class="social-links">
-                    <a href="https://www.facebook.com/kalpavrikshaeducation"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.tiktok.com/@kalpaedu"><i class="fab fa-tiktok"></i></a>
+                    <?php $facebook_url = get_setting('facebook_url', 'https://www.facebook.com/kalpavrikshaeducation'); ?>
+                    <?php if (!empty($facebook_url)): ?>
+                    <a href="<?php echo htmlspecialchars($facebook_url); ?>"><i class="fab fa-facebook-f"></i></a>
+                    <?php endif; ?>
+                    
+                    <?php $tiktok_url = get_setting('tiktok_url', 'https://www.tiktok.com/@kalpaedu'); ?>
+                    <?php if (!empty($tiktok_url)): ?>
+                    <a href="<?php echo htmlspecialchars($tiktok_url); ?>"><i class="fab fa-tiktok"></i></a>
+                    <?php endif; ?>
+                    
+                    <?php $instagram_url = get_setting('instagram_url', ''); ?>
+                    <?php if (!empty($instagram_url)): ?>
+                    <a href="<?php echo htmlspecialchars($instagram_url); ?>"><i class="fab fa-instagram"></i></a>
+                    <?php endif; ?>
+                    
+                    <?php $youtube_url = get_setting('youtube_url', ''); ?>
+                    <?php if (!empty($youtube_url)): ?>
+                    <a href="<?php echo htmlspecialchars($youtube_url); ?>"><i class="fab fa-youtube"></i></a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> Kalpavriksha Education Foundation. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> <?php the_setting('site_title', 'Kalpavriksha Education Foundation'); ?>. All rights reserved.</p>
         </div>
     </footer>
 

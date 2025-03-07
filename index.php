@@ -1,6 +1,7 @@
 <?php
+require_once 'includes/config.php';
 // Set page-specific variables
-$page_title = "Kalpavriksha Education Foundation - Empowering Educators Since 2016";
+$page_title = get_setting('site_title', 'Kalpavriksha Education Foundation') . " - " . get_setting('site_tagline', 'Empowering Educators Since 2016');
 $current_page = "home";
 $additional_css ='
 <style>
@@ -2138,12 +2139,27 @@ html {
   }
 }
 </style>';
-// Include database connection
 require_once 'includes/config.php';
 
-// Fetch testimonials for the testimonials section
-$testimonials_query = "SELECT * FROM testimonials WHERE is_active = 1 ORDER BY display_order ASC LIMIT 8";
-$testimonials_result = mysqli_query($conn, $testimonials_query);
+// Fetch testimonials for the testimonials section if enabled
+$show_testimonials = is_setting_enabled('show_testimonials', true);
+$testimonials_count = (int)get_setting('testimonials_count', 8);
+
+$testimonials_result = null;
+if ($show_testimonials) {
+    $testimonials_query = "SELECT * FROM testimonials WHERE is_active = 1 ORDER BY display_order ASC LIMIT " . $testimonials_count;
+    $testimonials_result = mysqli_query($conn, $testimonials_query);
+}
+
+// Fetch partners if enabled
+$show_partners = is_setting_enabled('show_partners', true);
+$partners_count = (int)get_setting('partners_count', 6);
+
+$partners_result = null;
+if ($show_partners) {
+    $partners_query = "SELECT * FROM partners WHERE is_active = 1 ORDER BY display_order ASC LIMIT " . $partners_count;
+    $partners_result = mysqli_query($conn, $partners_query);
+}
 
 // Include the header
 include 'includes/header.php';
@@ -2153,6 +2169,7 @@ include 'includes/header.php';
 
     <!-- Updated Hero Section -->
     <!-- Full-screen Hero Section -->
+    <?php if (is_setting_enabled('show_hero_section', true)): ?>
     <section id="hero" class="hero-section-fullscreen">
       <div class="hero-background">
         <img src="images/hero1.webp" alt="School Background" class="bg-image" width="1920" height="1080"
@@ -2169,9 +2186,8 @@ include 'includes/header.php';
           <i class="fas fa-star"></i>
           <span>Shaping the Future of Education Since 2016</span>
         </div>
-        <h1>Transform Education with <span class="highlight">Kalpavriksha</span></h1>
-        <p>Empowering schools and teachers with expert training, consultation, and child-focused educational resources.
-        </p>
+        <h1>Transform Education with <span class="highlight"><?php the_setting('site_title', 'Kalpavriksha'); ?></span></h1>
+        <p><?php the_setting('site_tagline', 'Empowering schools and teachers with expert training, consultation, and child-focused educational resources.'); ?></p>
         <div class="hero-buttons">
           <a href="#services" class="cta-button">Get Started</a>
           <a href="/consultation" class="secondary-button">Learn More</a>
@@ -2183,6 +2199,7 @@ include 'includes/header.php';
         <button class="bg-dot" data-index="2"></button>
       </div>
     </section>
+    <?php endif; ?>
     <!-- Updated Features Section -->
     <!-- Mission & Vision Section -->
     <!-- Mission & Vision Section -->

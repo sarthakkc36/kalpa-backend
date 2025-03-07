@@ -25,6 +25,9 @@ function clean_input($data) {
     return mysqli_real_escape_string($conn, $data);
 }
 
-// Include helper functions
+// Include settings helper functions
+require_once __DIR__ . '/settings-helper.php';
+
+// Include other helper functions
 require_once __DIR__ . '/helpers.php';
 ?>

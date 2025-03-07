@@ -16,21 +16,21 @@ session_start();
     <meta name="theme-color" content="#48825d">
 
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Kalpavriksha Education Foundation">
-    <meta name="description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
+    <meta name="title" content="<?php the_setting('site_title', 'Kalpavriksha Education Foundation'); ?>">
+    <meta name="description" content="<?php the_setting('meta_description', 'Empowering schools and teachers with expert training, consultation, and child-focused educational resources.'); ?>">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kalpaeducation.com">
-    <meta property="og:title" content="Kalpavriksha Education Foundation">
-    <meta property="og:description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
+    <meta property="og:title" content="<?php the_setting('site_title', 'Kalpavriksha Education Foundation'); ?>">
+    <meta property="og:description" content="<?php the_setting('meta_description', 'Empowering schools and teachers with expert training, consultation, and child-focused educational resources.'); ?>">
     <meta property="og:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://kalpaeducation.com">
-    <meta name="twitter:title" content="Kalpavriksha Education Foundation">
-    <meta name="twitter:description" content="Empowering schools and teachers with expert training, consultation, and child-focused educational resources.">
+    <meta name="twitter:title" content="<?php the_setting('site_title', 'Kalpavriksha Education Foundation'); ?>">
+    <meta name="twitter:description" content="<?php the_setting('meta_description', 'Empowering schools and teachers with expert training, consultation, and child-focused educational resources.'); ?>">
     <meta name="twitter:image" content="https://kalpaeducation.com/images/android-chrome-512x512.png">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -38,19 +38,33 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title><?php echo isset($page_title) ? $page_title : 'Kalpavriksha Education Foundation'; ?></title>
+    <title><?php echo isset($page_title) ? $page_title : the_setting('site_title', 'Kalpavriksha Education Foundation', false); ?></title>
     
     <link rel="stylesheet" href="styles.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <?php if (isset($additional_css)): ?>
         <?php echo $additional_css; ?>
     <?php endif; ?>
+    
+    <!-- Google Analytics Code -->
+    <?php $analytics_code = get_setting('google_analytics', ''); ?>
+    <?php if (!empty($analytics_code)): ?>
+    <script async>
+        <?php echo $analytics_code; ?>
+    </script>
+    <?php endif; ?>
+    
+    <!-- Meta Keywords -->
+    <?php $meta_keywords = get_setting('meta_keywords', ''); ?>
+    <?php if (!empty($meta_keywords)): ?>
+    <meta name="keywords" content="<?php echo htmlspecialchars($meta_keywords); ?>">
+    <?php endif; ?>
 </head>
 <body>
     <!-- Header -->
     <header>
         <a href="/index.php" class="logo">
-            <img src="images/logo.webp" alt="Kalpavriksha Logo" width="auto" height="auto" />
+            <img src="images/logo.webp" alt="<?php the_setting('site_title', 'Kalpavriksha Logo'); ?>" width="auto" height="auto" />
         </a>
         
         <!-- Desktop Navigation -->
@@ -96,19 +110,19 @@ session_start();
         <div class="info-slider">
           <div class="info-slide">
             <i class="fas fa-phone"></i>
-             <a href="tel:01-4547300">01-4547300</a>
+             <a href="tel:<?php the_setting('contact_phone', '01-4547300'); ?>"><?php the_setting('contact_phone', '01-4547300'); ?></a>
           </div>
           <div class="info-slide">
             <i class="fas fa-envelope"></i>
-            <a href="mailto:kalpavriksha.efn@gmail.com">kalpavriksha.efn@gmail.com</a>
+            <a href="mailto:<?php the_setting('contact_email', 'kalpavriksha.efn@gmail.com'); ?>"><?php the_setting('contact_email', 'kalpavriksha.efn@gmail.com'); ?></a>
           </div>
           <div class="info-slide">
             <i class="far fa-clock"></i>
-            Office Hour: 9am - 6pm
+            Office Hour: <?php the_setting('office_hours', '9am - 6pm'); ?>
           </div>
           <div class="info-slide">
             <i class="fas fa-map-marker-alt"></i>
-            Maharajgunj, Kathmandu, Nepal || Ghorahi, Dang, Nepal
+            <?php the_setting('contact_address_ktm', 'Maharajgunj, Kathmandu, Nepal'); ?> || <?php the_setting('contact_address_dang', 'Ghorahi, Dang, Nepal'); ?>
           </div>
         </div>
       </div>
