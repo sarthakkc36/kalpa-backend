@@ -1,6 +1,6 @@
 <?php
 $page_title = "Add Gallery Item";
-include 'includes/admin-header.php';
+include '../includes/admin-header.php';
 
 $error_message = '';
 $success_message = '';
@@ -236,4 +236,4 @@ while ($row = mysqli_fetch_assoc($categories_result)) {
     });
 </script>
 
-<?php include 'includes/admin-footer.php'; ?>
+<?php include '../includes/admin-footer.php'; ?>
