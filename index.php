@@ -2268,7 +2268,7 @@ include 'includes/header.php';
                   <a href="/school-consultation">School Consultation</a>
                 </li>
                 <li class="service-link">
-                  <a href="/consultation#phonics">Phonics Consultation</a>
+                  <a href="/phonics">Phonics Consultation</a>
                 </li>
               </ul>
             </div>
@@ -2306,7 +2306,7 @@ include 'includes/header.php';
               <h3 class="service-title">Resources</h3>
               <ul class="service-links">
                 <li class="service-link">
-                  <a href="/resources#teaching">Teaching Resources</a>
+                  <a href="/Resources#teaching">Teaching Resources</a>
                 </li>
               </ul>
             </div>
