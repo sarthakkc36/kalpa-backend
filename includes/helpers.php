@@ -45,3 +45,24 @@ function get_partners() {
     
     return $partners;
 }
+/**
+ * Get awards from the database
+ * 
+ * @param int $limit Maximum number of awards to return
+ * @return array Array of awards
+ */
+function get_awards($limit = 5) {
+    global $conn;
+    
+    $awards = array();
+    $awards_query = "SELECT * FROM awards WHERE is_active = 1 ORDER BY display_order ASC, award_date DESC LIMIT " . intval($limit);
+    $awards_result = mysqli_query($conn, $awards_query);
+    
+    if ($awards_result) {
+        while ($row = mysqli_fetch_assoc($awards_result)) {
+            $awards[] = $row;
+        }
+    }
+    
+    return $awards;
+}

@@ -230,6 +230,7 @@ require_once '../includes/config.php';
                 <li><a href="training-modules.php" <?php echo basename($_SERVER['PHP_SELF']) == 'training-modules.php' ? 'class="active"' : ''; ?>><i class="fas fa-book"></i> Training Modules</a></li>
                 <li><a href="products.php" <?php echo basename($_SERVER['PHP_SELF']) == 'products.php' ? 'class="active"' : ''; ?>><i class="fas fa-shopping-cart"></i> Products</a></li>
                 <li><a href="settings.php" <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'class="active"' : ''; ?>><i class="fas fa-sliders-h"></i> Settings</a></li>
+                <li><a href="awards.php" <?php echo basename($_SERVER['PHP_SELF']) == 'awards.php' ? 'class="active"' : ''; ?>><i class="fas fa-trophy"></i> Awards</a></li>
             </ul>
         </div>
         
@@ -237,7 +238,7 @@ require_once '../includes/config.php';
             <div class="page-header">
                 <h1><?php echo isset($page_title) ? $page_title : 'Admin Dashboard'; ?></h1>
                 <div class="user-info">
-                    <span>Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+                    <span>Welcome, Admin</span>
                     <a href="logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
