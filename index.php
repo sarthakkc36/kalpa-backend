@@ -2314,36 +2314,101 @@ include 'includes/header.php';
         </div>
       </section>
     </div>
-    <section class="services-section" style="background-color: var(--white);">
-      <div class="container">
-        <h2 class="section-title">Awards & Recognition</h2>
-        <div class="services-grid" style="grid-template-columns: 1fr;">
+    <?php 
+// Check if Awards section is enabled
+$show_awards = is_setting_enabled('show_awards', true);
+$awards_count = (int)get_setting('awards_count', 5);
+
+// Fetch awards if the section is enabled
+$awards = $show_awards ? get_awards($awards_count) : array();
+
+if ($show_awards): 
+?>
+<section class="services-section" style="background-color: var(--white);">
+  <div class="container">
+    <h2 class="section-title">Awards & Recognition</h2>
+    
+    <?php
+    // Check if we have any awards to display
+    if (count($awards) > 0): 
+    ?>
+      <div class="services-grid" style="grid-template-columns: 1fr;">
+        <?php foreach ($awards as $award): ?>
           <div class="service-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
             <div class="service-icon" style="width: 80px; height: 80px; margin-bottom: 1.5rem;">
               <i class="fas fa-trophy" style="font-size: 2.5rem; color: var(--primary);"></i>
             </div>
-            <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem;">Gijjubhai Badheka ECCE Award for Most Promising Curriculum Development! 🏆</h3>
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gfBki1Wa7ymdyC54e2wyKArdLXic16.png" alt="Gijjubhai Badheka ECCE Award" style="max-width: 30%; height: auto; border-radius: 10px; margin-bottom: 1.5rem;">
-            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
-              A moment of immense pride and joy for Kalpavriksha Education Foundation! ✨
-            </p>
-            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
-              Bright Kinderworld, one of the schools under our consultation, has been honored with the Gijjubhai Badheka ECCE Award for Most Promising Curriculum Development!
-            </p>
-            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
-              This award is not just a recognition—it's a testament to the dedication, passion, and belief in the curriculum that fuels holistic, child-centric learning every single day. Seeing our vision come to life at Bright Kinderworld and being celebrated on such a platform is truly heartwarming!
-            </p>
-            <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
-              A huge congratulations to the entire Bright Kinderworld team for embracing and executing our curriculum with such commitment. This is a win for every child who experiences the joy of learning through our work. Here's to many more milestones ahead! ✨🎉
-            </p>
-            <div style="margin-top: 1.5rem;">
-              <span style="font-weight: bold; color: var(--primary);">Awarded at:</span>
-              <span style="color: var(--text);">International Conference on Early Childhood Care Education and Research in 2.0</span>
-            </div>
+            <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem;"><?php echo htmlspecialchars($award['title']); ?></h3>
+            
+            <?php if (!empty($award['subtitle'])): ?>
+              <h4 style="color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 1rem;"><?php echo htmlspecialchars($award['subtitle']); ?></h4>
+            <?php endif; ?>
+            
+            <?php if (!empty($award['image_path'])): ?>
+              <img src="<?php echo htmlspecialchars($award['image_path']); ?>" alt="<?php echo htmlspecialchars($award['title']); ?>" style="max-width: 30%; height: auto; border-radius: 10px; margin-bottom: 1.5rem;">
+            <?php endif; ?>
+            
+            <?php 
+            // Display description paragraphs
+            $paragraphs = explode("\n", $award['description']);
+            foreach ($paragraphs as $paragraph):
+                if (!empty(trim($paragraph))):
+            ?>
+                <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
+                    <?php echo htmlspecialchars($paragraph); ?>
+                </p>
+            <?php 
+                endif;
+            endforeach; 
+            ?>
+            
+            <?php if (!empty($award['awarded_by'])): ?>
+              <div style="margin-top: 1.5rem;">
+                <span style="font-weight: bold; color: var(--primary);">Awarded at:</span>
+                <span style="color: var(--text);"><?php echo htmlspecialchars($award['awarded_by']); ?></span>
+              </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($award['award_date'])): ?>
+              <div style="margin-top: 0.5rem;">
+                <span style="font-weight: bold; color: var(--primary);">Date:</span>
+                <span style="color: var(--text);"><?php echo date('F j, Y', strtotime($award['award_date'])); ?></span>
+              </div>
+            <?php endif; ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <!-- Display fallback static content if no awards in database -->
+      <div class="services-grid" style="grid-template-columns: 1fr;">
+        <div class="service-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 800px; margin: 0 auto;">
+          <div class="service-icon" style="width: 80px; height: 80px; margin-bottom: 1.5rem;">
+            <i class="fas fa-trophy" style="font-size: 2.5rem; color: var(--primary);"></i>
+          </div>
+          <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem;">Gijjubhai Badheka ECCE Award for Most Promising Curriculum Development! 🏆</h3>
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gfBki1Wa7ymdyC54e2wyKArdLXic16.png" alt="Gijjubhai Badheka ECCE Award" style="max-width: 30%; height: auto; border-radius: 10px; margin-bottom: 1.5rem;">
+          <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
+            A moment of immense pride and joy for Kalpavriksha Education Foundation! ✨
+          </p>
+          <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
+            Bright Kinderworld, one of the schools under our consultation, has been honored with the Gijjubhai Badheka ECCE Award for Most Promising Curriculum Development!
+          </p>
+          <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
+            This award is not just a recognition—it's a testament to the dedication, passion, and belief in the curriculum that fuels holistic, child-centric learning every single day. Seeing our vision come to life at Bright Kinderworld and being celebrated on such a platform is truly heartwarming!
+          </p>
+          <p style="color: var(--text); line-height: 1.6; margin-bottom: 1rem;">
+            A huge congratulations to the entire Bright Kinderworld team for embracing and executing our curriculum with such commitment. This is a win for every child who experiences the joy of learning through our work. Here's to many more milestones ahead! ✨🎉
+          </p>
+          <div style="margin-top: 1.5rem;">
+            <span style="font-weight: bold; color: var(--primary);">Awarded at:</span>
+            <span style="color: var(--text);">International Conference on Early Childhood Care Education and Research in 2.0</span>
           </div>
         </div>
       </div>
-    </section>
+    <?php endif; ?>
+  </div>
+</section>
+<?php endif; ?>
     <!-- About the Director -->
     <section class="director-section">
       <div class="director-container">
