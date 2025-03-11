@@ -61,6 +61,10 @@ $default_settings = [
     ['items_per_page', '10', 'admin', 'Items Per Page in Admin Lists', 'number'],
     ['enable_file_upload', '1', 'admin', 'Enable File Upload', 'boolean'],
     ['max_upload_size', '5', 'admin', 'Maximum Upload Size (MB)', 'number'],
+
+    // Award Settings
+    ['show_awards', '1', 'homepage', 'Show Awards & Recognition', 'boolean'],
+    ['awards_count', '5', 'homepage', 'Number of Awards to Display', 'number'],
 ];
 
 foreach ($default_settings as $setting) {
